@@ -1,0 +1,10 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:colorAccent">#62F4CC</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#081419</item>
+        <item name="android:navigationBarColor">#081419</item>
+        <item name="android:windowSplashScreenBackground">#081419</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+    </style>
+</resources>
