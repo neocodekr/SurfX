@@ -88,11 +88,11 @@ class MainActivity : ComponentActivity() {
             .build().loadAd(AdRequest.Builder().build())
     }
     fun showRewardedAd() {
-        if (vm.adRewardDone) { vm.showNotice("오늘의 추가 보상은 이미 받았어요"); return }
-        if (!UserMessagingPlatform.getConsentInformation(this).canRequestAds()) { vm.showNotice("광고를 불러올 수 없어요"); return }
+        if (vm.adRewardDone) { vm.showNotice(vm.tr("오늘의 추가 보상은 이미 받았어요", "You already claimed today's bonus")); return }
+        if (!UserMessagingPlatform.getConsentInformation(this).canRequestAds()) { vm.showNotice(vm.tr("광고를 불러올 수 없어요", "Ads are unavailable")); return }
         RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917", AdRequest.Builder().build(), object : RewardedAdLoadCallback() {
             override fun onAdLoaded(ad: RewardedAd) { ad.show(this@MainActivity) { vm.rewardAd() } }
-            override fun onAdFailedToLoad(error: LoadAdError) { vm.showNotice("광고를 불러오지 못했어요. 다시 시도해 주세요") }
+            override fun onAdFailedToLoad(error: LoadAdError) { vm.showNotice(vm.tr("광고를 불러오지 못했어요. 다시 시도해 주세요", "Couldn't load the ad. Please try again.")) }
         })
     }
     private fun checkVersion() {
@@ -121,17 +121,17 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     BackHandler(vm.screen != Screen.Welcome) {
         if (vm.screen == Screen.Home) { (activity as MainActivity).loadExitNativeAd(); exitDialog = true } else vm.back()
     }
-    if (exitDialog) AlertDialog(onDismissRequest = { exitDialog = false }, title = { Text("SurfX 종료", color = White) },
-        text = { Column { Text("정말 종료하시겠습니까?", color = Muted); Gap(10); (activity as MainActivity).exitNativeAd?.let { ExitNativeAd(it) } } },
-        confirmButton = { TextButton(onClick = { activity.finish() }) { Text("확인") } },
-        dismissButton = { TextButton(onClick = { exitDialog = false }) { Text("취소") } },
+    if (exitDialog) AlertDialog(onDismissRequest = { exitDialog = false }, title = { Text(vm.tr("SurfX 종료", "Exit SurfX"), color = White) },
+        text = { Column { Text(vm.tr("정말 종료하시겠습니까?", "Are you sure you want to exit?"), color = Muted); Gap(10); (activity as MainActivity).exitNativeAd?.let { ExitNativeAd(it) } } },
+        confirmButton = { TextButton(onClick = { activity.finish() }) { Text(vm.tr("확인", "OK")) } },
+        dismissButton = { TextButton(onClick = { exitDialog = false }) { Text(vm.tr("취소", "Cancel")) } },
         containerColor = Card)
     if (updateMessage.isNotEmpty()) AlertDialog(onDismissRequest = clearUpdate,
-        title = { Text("업데이트 안내") }, text = { Text(updateMessage) },
-        confirmButton = { TextButton(onClick = { clearUpdate(); openUrl("https://play.google.com/store/apps/details?id=com.neocode.surfx") }) { Text("스토어 열기") } },
-        dismissButton = { TextButton(onClick = clearUpdate) { Text("나중에") } }, containerColor = Card)
+        title = { Text(vm.tr("업데이트 안내", "Update available")) }, text = { Text(vm.tr(updateMessage, "A new version is available on the Play Store.")) },
+        confirmButton = { TextButton(onClick = { clearUpdate(); openUrl("https://play.google.com/store/apps/details?id=com.neocode.surfx") }) { Text(vm.tr("스토어 열기", "Open store")) } },
+        dismissButton = { TextButton(onClick = clearUpdate) { Text(vm.tr("나중에", "Later")) } }, containerColor = Card)
     if (vm.notice.isNotEmpty()) AlertDialog(onDismissRequest = vm::clearNotice,
-        text = { Text(vm.notice) }, confirmButton = { TextButton(onClick = vm::clearNotice) { Text("확인") } }, containerColor = Card)
+        text = { Text(vm.notice) }, confirmButton = { TextButton(onClick = vm::clearNotice) { Text(vm.tr("확인", "OK")) } }, containerColor = Card)
 
     Column(Modifier.fillMaxSize().background(Bg).statusBarsPadding().navigationBarsPadding()) {
         if (showBrandSplash) {
@@ -147,6 +147,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
                 Screen.Checkin -> Checkin(vm)
                 Screen.Missions -> Missions(vm)
                 Screen.Lesson -> Lesson(vm)
+                Screen.QuizBank -> QuizBank(vm)
                 Screen.Quiz -> Quiz(vm)
                 Screen.Result -> Result(vm)
                 Screen.Crew -> Crew(vm)
@@ -191,7 +192,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
 
 @Composable private fun BottomNav(vm: SurfViewModel) {
     Row(Modifier.fillMaxWidth().background(Color(0xFF0B1B20)).height(60.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-        listOf(Triple("⌂", "홈", Screen.Home), Triple("▣", "미션", Screen.Missions), Triple("♧", "크루", Screen.Crew), Triple("▤", "지갑", Screen.Wallet)).forEach { (icon,label,target) ->
+        listOf(Triple("⌂", vm.tr("홈", "Home"), Screen.Home), Triple("▣", vm.tr("미션", "Missions"), Screen.Missions), Triple("♧", vm.tr("크루", "Crew"), Screen.Crew), Triple("▤", vm.tr("지갑", "Wallet"), Screen.Wallet)).forEach { (icon,label,target) ->
             val selected = vm.screen == target
             Column(Modifier.weight(1f).fillMaxHeight().clickable { vm.go(target) }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Text(icon, color = if (selected) Mint else Muted, fontSize = 22.sp)
@@ -246,14 +247,14 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
         Gap(28); Text("〰 SurfX", color = White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.weight(0.3f)); Hero(285)
         Gap(8)
-        Text("작은 도전,\n새로운 파도.", color = White, textAlign = TextAlign.Center, fontSize = 32.sp, lineHeight = 38.sp, fontWeight = FontWeight.Bold)
-        Gap(14); Sub("매일 배우고, 함께 도전하며\n나만의 포인트를 모아요.")
-        Spacer(Modifier.weight(1f)); Primary("체험 시작하기", vm::enter); Gap(10)
-        Text("이 앱의 포인트와 활동은 이 기기에만 저장되는 체험 데이터입니다.", color = Muted, fontSize = 11.sp, textAlign = TextAlign.Center)
+        Text(vm.tr("작은 도전,\n새로운 파도.", "Small challenges,\nnew waves."), color = White, textAlign = TextAlign.Center, fontSize = 32.sp, lineHeight = 38.sp, fontWeight = FontWeight.Bold)
+        Gap(14); Sub(vm.tr("매일 배우고, 함께 도전하며\n나만의 포인트를 모아요.", "Learn every day, take on challenges together,\nand collect your points."))
+        Spacer(Modifier.weight(1f)); Primary(vm.tr("체험 시작하기", "Get started"), vm::enter); Gap(10)
+        Text(vm.tr("이 앱의 포인트와 활동은 이 기기에만 저장되는 체험 데이터입니다.", "Points and activity in this demo are stored only on this device."), color = Muted, fontSize = 11.sp, textAlign = TextAlign.Center)
         Gap(12); Row {
-            Text("서비스 이용약관", Modifier.clickable { openUrl("https://neocode.cloud/term_of_service.html") }, color = Muted, fontSize = 11.sp)
+            Text(vm.tr("서비스 이용약관", "Terms of service"), Modifier.clickable { openUrl("https://neocode.cloud/term_of_service.html") }, color = Muted, fontSize = 11.sp)
             Text("  ·  ", color = Muted)
-            Text("개인정보 처리방침", Modifier.clickable { openUrl("https://neocode.cloud/private_privacy.html") }, color = Muted, fontSize = 11.sp)
+            Text(vm.tr("개인정보 처리방침", "Privacy policy"), Modifier.clickable { openUrl("https://neocode.cloud/private_privacy.html") }, color = Muted, fontSize = 11.sp)
         }; Gap(10); Image(painterResource(R.drawable.neocode_logo), "neocode", Modifier.height(22.dp))
     }
 }
@@ -267,26 +268,26 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
             Text("〰 SurfX", Modifier.weight(1f), color = White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             Text("W", Modifier.background(CardAlt, RoundedCornerShape(50)).clickable { vm.go(Screen.Profile) }.padding(horizontal = 13.dp, vertical = 9.dp), color = Mint)
         }
-        Sub("내 포인트"); Row(Modifier.clickable { vm.go(Screen.Wallet) }, verticalAlignment = Alignment.Bottom) {
+        Sub(vm.tr("내 포인트", "My points")); Row(Modifier.clickable { vm.go(Screen.Wallet) }, verticalAlignment = Alignment.Bottom) {
             Text("${"%,d".format(vm.points)}", color = White, fontSize = 30.sp, fontWeight = FontWeight.Bold); Text(" P  ›", color = Muted, fontSize = 16.sp)
         }
         Hero(225)
-        Text(if (vm.surfingSince == 0L) "오늘의 파도를 시작해요" else "포인트가 쌓이고 있어요", Modifier.fillMaxWidth(), color = White, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
-        Gap(4); Text(if (vm.surfingSince == 0L) "24시간 서핑하고 최대 120P" else "서핑 진행 중 · 체험 기록", Modifier.fillMaxWidth(), color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
-        Gap(18); if (vm.surfingSince == 0L) Primary("〰  서핑 시작", vm::startSurf)
-            else if (vm.surfProgress() >= 1f) Primary("서핑 완료 · 120P 받기", vm::claimSurf)
-            else Primary("＋  미션으로 더 모으기") { vm.go(Screen.Missions) }
+        Text(if (vm.surfingSince == 0L) vm.tr("오늘의 파도를 시작해요", "Start today's wave") else vm.tr("포인트가 쌓이고 있어요", "Your points are growing"), Modifier.fillMaxWidth(), color = White, fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center)
+        Gap(4); Text(if (vm.surfingSince == 0L) vm.tr("24시간 서핑하고 최대 120P", "Surf for 24 hours to earn up to 120P") else vm.tr("서핑 진행 중 · 체험 기록", "Surfing in progress · demo record"), Modifier.fillMaxWidth(), color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+        Gap(18); if (vm.surfingSince == 0L) Primary(vm.tr("〰  서핑 시작", "〰  Start surfing"), vm::startSurf)
+            else if (vm.surfProgress() >= 1f) Primary(vm.tr("서핑 완료 · 120P 받기", "Surf complete · Claim 120P"), vm::claimSurf)
+            else Primary(vm.tr("＋  미션으로 더 모으기", "＋  Earn more in missions")) { vm.go(Screen.Missions) }
         Gap(20)
         if (vm.surfingSince != 0L) {
-            Surface { H2("이번 서핑"); Gap(10); LinearProgressIndicator(progress = { vm.surfProgress() }, modifier = Modifier.fillMaxWidth(), color = Mint, trackColor = CardAlt); Gap(7); Sub("적립 예정 ${(vm.surfProgress()*120).toInt()} / 120 P · 완료 후 받을 수 있어요") }
+            Surface { H2(vm.tr("이번 서핑", "Current surf")); Gap(10); LinearProgressIndicator(progress = { vm.surfProgress() }, modifier = Modifier.fillMaxWidth(), color = Mint, trackColor = CardAlt); Gap(7); Sub(vm.tr("적립 예정 ${(vm.surfProgress()*120).toInt()} / 120 P · 완료 후 받을 수 있어요", "Estimated ${(vm.surfProgress()*120).toInt()} / 120 P · Claim when complete")) }
         } else {
-            H2("오늘의 작은 도전"); Gap(10)
+            H2(vm.tr("오늘의 작은 도전", "Today's challenges")); Gap(10)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                HomeMission("♧", "출석 체크", "오늘도 만나서 반가워요", "+10P", Modifier.weight(1f)) { vm.go(Screen.Checkin) }
-                HomeMission("▣", "오늘의 퀴즈", "한 문제로 가볍게", "+20P", Modifier.weight(1f)) { vm.go(Screen.Quiz) }
+                HomeMission("♧", vm.tr("출석 체크", "Check in"), vm.tr("오늘도 만나서 반가워요", "Good to see you"), "+10P", Modifier.weight(1f)) { vm.go(Screen.Checkin) }
+                HomeMission("▣", vm.tr("오늘의 퀴즈", "Daily quiz"), vm.tr("한 문제로 가볍게", "One quick question"), "+20P", Modifier.weight(1f)) { vm.openDailyQuiz() }
             }
         }
-        Gap(8); Item("나의 Mint Wave", "Lv. ${vm.boardLevel} · 다음 파도를 준비해요") { vm.go(Screen.Board) }
+        Gap(8); Item(vm.tr("나의 Mint Wave", "My Mint Wave"), vm.tr("Lv. ${vm.boardLevel} · 다음 파도를 준비해요", "Lv. ${vm.boardLevel} · Ready for the next wave")) { vm.go(Screen.Board) }
         Gap(20)
     }
 }
@@ -301,34 +302,34 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     }
 }
 
-@Composable private fun Checkin(vm: SurfViewModel) = Page("출석 체크", vm) {
+@Composable private fun Checkin(vm: SurfViewModel) = Page(vm.tr("출석 체크", "Check in"), vm) {
     Eyebrow("A little, every day"); Gap(24)
     Text("🎁", Modifier.fillMaxWidth(), textAlign = TextAlign.Center, fontSize = 62.sp); Gap(18)
-    Text("매일 만나는 보상", Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-    Gap(8); Text("오늘도 함께 파도를 이어가요", Modifier.fillMaxWidth(), color = Muted, textAlign = TextAlign.Center)
-    Gap(32); H2("7일 출석 챌린지"); Gap(12)
+    Text(vm.tr("매일 만나는 보상", "A daily reward"), Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+    Gap(8); Text(vm.tr("오늘도 함께 파도를 이어가요", "Keep the wave going today"), Modifier.fillMaxWidth(), color = Muted, textAlign = TextAlign.Center)
+    Gap(32); H2(vm.tr("7일 출석 챌린지", "7-day check-in challenge")); Gap(12)
     Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-        listOf("1일차\n✓\n+10P", "2일차\n✓\n+10P", "오늘\n🎁\n+10P", "4일차\n+15P").forEachIndexed { i, s ->
+        listOf(vm.tr("1일차\n✓\n+10P", "Day 1\n✓\n+10P"), vm.tr("2일차\n✓\n+10P", "Day 2\n✓\n+10P"), vm.tr("오늘\n🎁\n+10P", "Today\n🎁\n+10P"), vm.tr("4일차\n+15P", "Day 4\n+15P")).forEachIndexed { i, s ->
             Box(Modifier.weight(1f).height(105.dp).background(if (i == 2) Mint else Card, RoundedCornerShape(13.dp)), contentAlignment = Alignment.Center) {
                 Text(s, color = if (i == 2) Bg else White, textAlign = TextAlign.Center, fontSize = 13.sp, lineHeight = 22.sp)
             }
         }
     }
-    Gap(10); Surface { H2("7일 완주 보너스  +50P"); Sub("매일 한 번, 작은 도전을 이어가 보세요.") }
-    Gap(35); Primary(if (vm.checkedIn) "오늘 출석 완료" else "오늘의 10P 받기", vm::checkin)
+    Gap(10); Surface { H2(vm.tr("7일 완주 보너스  +50P", "7-day bonus  +50P")); Sub(vm.tr("매일 한 번, 작은 도전을 이어가 보세요.", "Keep up a small challenge every day.")) }
+    Gap(35); Primary(if (vm.checkedIn) vm.tr("오늘 출석 완료", "Checked in today") else vm.tr("오늘의 10P 받기", "Claim today's 10P"), vm::checkin)
 }
 
 @Composable private fun Missions(vm: SurfViewModel) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp)) {
-        Text("미션", Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        Gap(28); Eyebrow("One step, one wave"); Gap(8); H1("오늘의 작은 도전"); Sub("가볍게 배우고, 차곡차곡 모아요.")
-        Gap(24); Tabs(listOf("오늘", "진행 중", "완료"), vm.missionTab, vm::chooseMissionTab)
-        Gap(15); Surface { Eyebrow("오늘의 추천"); Gap(10); H2("Web3, 처음부터 가볍게"); Sub("2분 학습 · +30P"); Gap(12); Secondary("학습하러 가기") { vm.go(Screen.Lesson) } }
-        Gap(24); H2("참여할 수 있는 미션")
+        Text(vm.tr("미션", "Missions"), Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Gap(28); Eyebrow("One step, one wave"); Gap(8); H1(vm.tr("오늘의 작은 도전", "Today's challenges")); Sub(vm.tr("가볍게 배우고, 차곡차곡 모아요.", "Learn a little and keep building."))
+        Gap(24); Tabs(listOf(vm.tr("오늘", "Today"), vm.tr("진행 중", "In progress"), vm.tr("완료", "Completed")), vm.missionTab, vm::chooseMissionTab)
+        Gap(15); Surface { Eyebrow(vm.tr("오늘의 추천", "TODAY'S PICK")); Gap(10); H2(vm.tr("Web3, 처음부터 가볍게", "An easy start with Web3")); Sub(vm.tr("2분 학습 · +30P", "2 min lesson · +30P")); Gap(12); Secondary(vm.tr("학습하러 가기", "Start learning")) { vm.go(Screen.Lesson) } }
+        Gap(24); H2(vm.tr("참여할 수 있는 미션", "Available missions"))
         when(vm.missionTab) {
-            0 -> { Item("오늘의 퀴즈", "1문제 · 약 30초", "+20P") { vm.go(Screen.Quiz) }; Item("새로운 프로젝트 만나기", "소개 읽기 · 약 2분", "+50P") { vm.go(Screen.Lesson) }; Item("오늘도 출석", "3일차 출석 받기", "+10P") { vm.go(Screen.Checkin) } }
-            1 -> Item("데일리 서핑", "서핑 상태 확인", "›") { vm.go(Screen.Home) }
-            else -> { if (vm.quizDone) Item("오늘의 퀴즈", "오늘 완료", "✓") { vm.go(Screen.Result) }; if (vm.lessonDone) Item("Web3 학습", "오늘 완료", "✓") { vm.go(Screen.Lesson) }; if (vm.checkedIn) Item("출석 체크", "오늘 완료", "✓") { vm.go(Screen.Checkin) } }
+            0 -> { Item(vm.tr("오늘의 퀴즈", "Daily quiz"), vm.tr("1문제 · 약 30초", "1 question · about 30 seconds"), "+20P") { vm.openDailyQuiz() }; Item(vm.tr("블록체인 문제은행", "Blockchain question bank"), vm.tr("1,200문항 · 자유 연습", "1,200 questions · free practice")) { vm.go(Screen.QuizBank) }; Item(vm.tr("새로운 프로젝트 만나기", "Discover a new project"), vm.tr("소개 읽기 · 약 2분", "2 min read"), "+50P") { vm.go(Screen.Lesson) }; Item(vm.tr("오늘도 출석", "Check in today"), vm.tr("3일차 출석 받기", "Claim today's check-in"), "+10P") { vm.go(Screen.Checkin) } }
+            1 -> Item(vm.tr("데일리 서핑", "Daily surfing"), vm.tr("서핑 상태 확인", "Check surfing status"), "›") { vm.go(Screen.Home) }
+            else -> { if (vm.quizDone) Item(vm.tr("오늘의 퀴즈", "Daily quiz"), vm.tr("오늘 완료", "Completed today"), "✓") { vm.openDailyQuiz() }; if (vm.lessonDone) Item(vm.tr("Web3 학습", "Web3 lesson"), vm.tr("오늘 완료", "Completed today"), "✓") { vm.go(Screen.Lesson) }; if (vm.checkedIn) Item(vm.tr("출석 체크", "Check in"), vm.tr("오늘 완료", "Completed today"), "✓") { vm.go(Screen.Checkin) } }
         }
     }
 }
@@ -340,114 +341,162 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     }
 }
 
-@Composable private fun Lesson(vm: SurfViewModel) = Page("가볍게 배우기", vm) {
-    Eyebrow("Web3 starter"); Gap(8); H1("블록체인,\n함께 기록하는 방법"); Gap(24)
+@Composable private fun Lesson(vm: SurfViewModel) = Page(vm.tr("가볍게 배우기", "Learn the basics"), vm) {
+    Eyebrow("Web3 starter"); Gap(8); H1(vm.tr("블록체인,\n함께 기록하는 방법", "Blockchain: a shared record")); Gap(24)
     Box(Modifier.fillMaxWidth().height(180.dp).background(CardAlt, RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) { Text("▣    ◈    ♧", color = Mint, fontSize = 42.sp) }
-    Gap(22); Sub("블록체인은 거래 기록을 여러 참여자가 함께 보관하고 확인하는 기술이에요.")
-    Gap(22); listOf("한 곳에 기록을 맡기지 않아요.", "기록의 변경 여부를 함께 확인해요.", "활동을 더 신뢰할 수 있게 도와줘요.").forEach { Item("✓  $it", "", "") {} }
-    Gap(30); Primary(if (vm.lessonDone) "퀴즈로 이어가기" else "학습 완료 · 30P 받기", vm::completeLesson)
+    Gap(22); Sub(vm.tr("블록체인은 거래 기록을 여러 참여자가 함께 보관하고 확인하는 기술이에요.", "A blockchain lets many participants store and verify records together."))
+    Gap(22); listOf(vm.tr("한 곳에 기록을 맡기지 않아요.", "Records aren't kept in one place."), vm.tr("기록의 변경 여부를 함께 확인해요.", "Participants can check for changes."), vm.tr("활동을 더 신뢰할 수 있게 도와줘요.", "This helps people trust the record.")).forEach { Item("✓  $it", "", "") {} }
+    Gap(30); Primary(if (vm.lessonDone) vm.tr("퀴즈로 이어가기", "Continue to quiz") else vm.tr("학습 완료 · 30P 받기", "Finish lesson · Claim 30P"), vm::completeLesson)
 }
 
-@Composable private fun Quiz(vm: SurfViewModel) = Page("오늘의 퀴즈", vm) {
-    Eyebrow("Daily quiz"); Gap(8); H1("오늘의 한 문제"); Gap(25)
-    LinearProgressIndicator(progress = { 1f }, modifier = Modifier.fillMaxWidth(), color = Mint, trackColor = CardAlt)
-    Gap(32); H2("블록체인에서 거래 기록을\n함께 보관하고 확인하는\n주체는 누구일까요?")
-    Gap(27); listOf("한 사람과 서버", "네트워크의 여러 참여자", "서비스 운영자 한 명", "특정 기기 한 대").forEachIndexed { i, s ->
-        Row(Modifier.fillMaxWidth().padding(bottom = 9.dp).background(if (vm.selectedAnswer == i) CardAlt else Card, RoundedCornerShape(13.dp)).border(1.dp, if (vm.selectedAnswer == i) Mint else Color.Transparent, RoundedCornerShape(13.dp)).clickable { vm.answer(i) }.padding(17.dp)) {
-            Text("${'A'+i}     $s", color = White, fontSize = 14.sp)
-            if (vm.selectedAnswer == i) Text("  ✓", color = Mint)
+@Composable private fun QuizBank(vm: SurfViewModel) = Page(vm.tr("블록체인 문제은행", "Blockchain question bank"), vm) {
+    Eyebrow("BLOCKCHAIN QUIZ"); Gap(8)
+    H1(vm.tr("1,200문항 자유 연습", "Practice 1,200 questions")); Gap(8)
+    Sub(vm.tr("난이도와 문제 유형을 선택하세요. 연습 문제에는 포인트가 지급되지 않습니다.", "Choose a difficulty and question type. Practice does not award points."))
+    Gap(24); H2(vm.tr("난이도", "Difficulty")); Gap(10)
+    Tabs(listOf(vm.tr("전체", "All"), vm.tr("초급", "Beginner"), vm.tr("중급", "Intermediate"), vm.tr("고급", "Advanced")), listOf("all", "beginner", "intermediate", "advanced").indexOf(vm.difficultyFilter)) { vm.chooseDifficulty(listOf("all", "beginner", "intermediate", "advanced")[it]) }
+    Gap(22); H2(vm.tr("문제 유형", "Question type")); Gap(10)
+    Tabs(listOf(vm.tr("전체", "All"), vm.tr("4지선다", "Multiple choice"), "O/X"), listOf("all", "multiple_choice", "true_false").indexOf(vm.typeFilter)) { vm.chooseType(listOf("all", "multiple_choice", "true_false")[it]) }
+    Gap(24); Sub(vm.tr("선택한 문제", "Selected questions") + "  ${vm.practiceQuestions().size} / 1,200")
+    Gap(18); Primary(vm.tr("연습 시작", "Start practice"), vm::openPractice)
+}
+
+@Composable private fun Quiz(vm: SurfViewModel) = Page(if (vm.quizMode == "daily") vm.tr("오늘의 퀴즈", "Daily quiz") else vm.tr("문제은행", "Question bank"), vm) {
+    val q = vm.currentQuestion()
+    if (q == null) {
+        Sub(if (vm.quizError) vm.tr("문제를 불러오지 못했어요.", "Couldn't load questions.") else vm.tr("문제를 불러오는 중…", "Loading questions…"))
+        return@Page
+    }
+    val pool = if (vm.quizMode == "practice") vm.practiceQuestions() else listOf(q)
+    val position = pool.indexOfFirst { it.id == q.id }.coerceAtLeast(0) + 1
+    Eyebrow(if (vm.quizMode == "daily") "DAILY QUIZ" else "QUESTION $position / ${pool.size}")
+    Gap(8); H1(q.topic); Gap(8)
+    Sub("${q.order} / 1,200 · " + when (q.difficulty) { "beginner" -> vm.tr("초급", "Beginner"); "intermediate" -> vm.tr("중급", "Intermediate"); else -> vm.tr("고급", "Advanced") })
+    Gap(20); LinearProgressIndicator(progress = { if (vm.quizMode == "daily") 1f else position.toFloat() / pool.size.coerceAtLeast(1) }, modifier = Modifier.fillMaxWidth(), color = Mint, trackColor = CardAlt)
+    Gap(25); H2(q.question)
+    Gap(22); q.options.forEachIndexed { i, option ->
+        val selected = vm.selectedAnswer == option.id
+        val correct = vm.answerRevealed && option.id == q.correctOptionId
+        val border = if (correct) Mint else if (selected) (if (vm.answerRevealed) Color(0xFFFFA0A0) else Mint) else Color.Transparent
+        Row(Modifier.fillMaxWidth().padding(bottom = 9.dp).background(if (selected || correct) CardAlt else Card, RoundedCornerShape(13.dp)).border(1.dp, border, RoundedCornerShape(13.dp)).clickable { vm.answer(option.id) }.padding(17.dp)) {
+            Text("${if (q.type == "true_false") option.text else "${'A' + i}   ${option.text}"}", color = White, fontSize = 14.sp, modifier = Modifier.weight(1f))
+            if (correct) Text("✓", color = Mint)
         }
     }
-    Gap(30); Primary("정답 확인", vm::submitQuiz)
+    Gap(16)
+    if (vm.answerRevealed) {
+        Surface {
+            H2(if (vm.answerCorrect) vm.tr("정답이에요!", "Correct!") else vm.tr("아쉬워요", "Not quite"))
+            if (vm.quizMode == "daily" && vm.answerCorrect) { Gap(5); Text(if (vm.rewardEarned) vm.tr("오늘의 보상: +20P", "Today's reward: +20P") else vm.tr("오늘의 보상은 이미 받았어요", "Today's reward was already claimed"), color = Mint) }
+            Gap(12); Sub(q.explanation)
+            Gap(12); Sub(vm.tr("학습목표: ", "Learning objective: ") + q.learningObjective)
+        }
+        Gap(18)
+        if (vm.quizMode == "practice") Primary(vm.tr("다음 문제", "Next question"), vm::nextPractice)
+        else Primary(vm.tr("미션으로 돌아가기", "Back to missions")) { vm.go(Screen.Missions) }
+    } else Primary(vm.tr("정답 확인", "Check answer"), vm::submitQuiz)
 }
 
-@Composable private fun Result(vm: SurfViewModel) = Page("보상", vm) {
+@Composable private fun Result(vm: SurfViewModel) = Page(vm.tr("보상", "Reward"), vm) {
     val activity = LocalContext.current as MainActivity
     Spacer(Modifier.height(42.dp)); Text("✦", Modifier.fillMaxWidth(), color = Mint, textAlign = TextAlign.Center, fontSize = 92.sp)
-    Gap(16); Text("정답이에요!", Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 27.sp, fontWeight = FontWeight.Bold)
-    Gap(12); Text("체험 포인트", Modifier.fillMaxWidth(), color = Muted, textAlign = TextAlign.Center)
+    Gap(16); Text(vm.tr("정답이에요!", "Correct!"), Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 27.sp, fontWeight = FontWeight.Bold)
+    Gap(12); Text(vm.tr("체험 포인트", "Demo points"), Modifier.fillMaxWidth(), color = Muted, textAlign = TextAlign.Center)
     Text("+20 P", Modifier.fillMaxWidth(), color = Mint, textAlign = TextAlign.Center, fontSize = 39.sp, fontWeight = FontWeight.Bold)
-    Gap(22); Surface { H2("현재 보유 포인트"); Text("${"%,d".format(vm.points)} P", color = White, fontSize = 20.sp) }
-    Gap(28); Primary("확인") { vm.go(Screen.Missions) }; Gap(10); Secondary("내 지갑 보기") { vm.go(Screen.Wallet) }
-    Gap(10); Secondary(if (vm.adRewardDone) "오늘의 광고 보상 완료" else "광고 보고 추가 체험 20P 받기") { activity.showRewardedAd() }
+    Gap(22); Surface { H2(vm.tr("현재 보유 포인트", "Current balance")); Text("${"%,d".format(vm.points)} P", color = White, fontSize = 20.sp) }
+    Gap(28); Primary(vm.tr("확인", "OK")) { vm.go(Screen.Missions) }; Gap(10); Secondary(vm.tr("내 지갑 보기", "View wallet")) { vm.go(Screen.Wallet) }
+    Gap(10); Secondary(if (vm.adRewardDone) vm.tr("오늘의 광고 보상 완료", "Today's ad bonus claimed") else vm.tr("광고 보고 추가 체험 20P 받기", "Watch an ad for 20 more demo points")) { activity.showRewardedAd() }
 }
 
 @Composable private fun Crew(vm: SurfViewModel) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp)) {
-        Text("크루", Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        Gap(28); Eyebrow("Your crew"); Gap(8); H1("함께 타는 파도"); Sub("작은 도전도 함께하면 더 멀리.")
-        Gap(22); Surface { Sub("내 크루"); Text("8 명", color = White, fontSize = 30.sp, fontWeight = FontWeight.Bold); Sub("오늘 5명 참여"); Gap(10); Text("●  ●  ●  ●  +4", color = Mint, fontSize = 21.sp) }
-        Gap(14); Primary("＋  친구 초대") { vm.go(Screen.Invite) }
-        Gap(26); Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { H2("크루 활동"); Text("랭킹  ›", Modifier.clickable { vm.go(Screen.Ranking) }, color = Mint) }
-        Item("Wave Rider", "오늘도 새로운 파도에 도전", "서핑 중") {}
-        Item("Neo", "3일 연속 출석", "+10P") {}
-        Item("Jin", "오늘의 퀴즈 완료", "+20P") {}
+        Text(vm.tr("크루", "Crew"), Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Gap(28); Eyebrow("Your crew"); Gap(8); H1(vm.tr("함께 타는 파도", "Ride the wave together")); Sub(vm.tr("작은 도전도 함께하면 더 멀리.", "Small challenges go further together."))
+        Gap(22); Surface { Sub(vm.tr("내 크루", "My crew")); Text(vm.tr("8 명", "8 members"), color = White, fontSize = 30.sp, fontWeight = FontWeight.Bold); Sub(vm.tr("오늘 5명 참여", "5 active today")); Gap(10); Text("●  ●  ●  ●  +4", color = Mint, fontSize = 21.sp) }
+        Gap(14); Primary(vm.tr("＋  친구 초대", "＋  Invite a friend")) { vm.go(Screen.Invite) }
+        Gap(26); Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { H2(vm.tr("크루 활동", "Crew activity")); Text(vm.tr("랭킹  ›", "Ranking  ›"), Modifier.clickable { vm.go(Screen.Ranking) }, color = Mint) }
+        Item("Wave Rider", vm.tr("오늘도 새로운 파도에 도전", "Riding a new wave today"), vm.tr("서핑 중", "Surfing")) {}
+        Item("Neo", vm.tr("3일 연속 출석", "3-day check-in streak"), "+10P") {}
+        Item("Jin", vm.tr("오늘의 퀴즈 완료", "Daily quiz completed"), "+20P") {}
     }
 }
 
-@Composable private fun Invite(vm: SurfViewModel) = Page("친구 초대", vm) {
+@Composable private fun Invite(vm: SurfViewModel) = Page(vm.tr("친구 초대", "Invite a friend"), vm) {
     val ctx = LocalContext.current
-    Eyebrow("Make waves together"); Gap(8); H1("좋은 파도는\n함께 타요."); Gap(12); Sub("친구와 SurfX를 시작하고\n함께 성장해 보세요.")
+    Eyebrow("Make waves together"); Gap(8); H1(vm.tr("좋은 파도는\n함께 타요.", "Great waves are\nbetter together.")); Gap(12); Sub(vm.tr("친구와 SurfX를 시작하고\n함께 성장해 보세요.", "Start SurfX with a friend\nand grow together."))
     Gap(35); Surface {
-        Sub("내 초대 코드"); Gap(8); Text("SURFX24", color = White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Gap(14); Secondary("코드 복사") { (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("SurfX invite code", "SURFX24")); vm.showNotice("초대 코드를 복사했어요") }
+        Sub(vm.tr("내 초대 코드", "My invite code")); Gap(8); Text("SURFX24", color = White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Gap(14); Secondary(vm.tr("코드 복사", "Copy code")) { (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("SurfX invite code", "SURFX24")); vm.showNotice(vm.tr("초대 코드를 복사했어요", "Invite code copied")) }
     }
-    Gap(12); Surface { H2("친구 초대 보상  +100P"); Gap(5); Sub("친구가 첫 서핑을 완료하면 지급하는 예시 정책입니다. 체험 앱에서는 자동 지급되지 않아요.") }
-    Gap(30); Primary("초대 링크 공유") {
-        val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, "SurfX Protocol 체험 코드: SURFX24")
-        ctx.startActivity(Intent.createChooser(send, "친구에게 공유"))
+    Gap(12); Surface { H2(vm.tr("친구 초대 보상  +100P", "Friend invite reward  +100P")); Gap(5); Sub(vm.tr("친구가 첫 서핑을 완료하면 지급하는 예시 정책입니다. 체험 앱에서는 자동 지급되지 않아요.", "This is an example reward policy. The demo app does not award it automatically.")) }
+    Gap(30); Primary(vm.tr("초대 링크 공유", "Share invite link")) {
+        val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, vm.tr("SurfX Protocol 체험 코드: SURFX24", "SurfX Protocol invite code: SURFX24"))
+        ctx.startActivity(Intent.createChooser(send, vm.tr("친구에게 공유", "Share with a friend")))
     }
 }
 
 @Composable private fun Wallet(vm: SurfViewModel) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp)) {
-        Text("지갑", Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        Gap(30); Eyebrow("My points"); Gap(10); Sub("내 포인트"); Text("${"%,d".format(vm.points)} P", color = White, fontSize = 36.sp, fontWeight = FontWeight.Bold); Sub("나의 도전이 차곡차곡 쌓이는 곳")
-        Gap(22); Text("체험 포인트 · 현금이나 토큰으로 교환할 수 없어요", color = Muted, fontSize = 12.sp)
-        Gap(35); H2("포인트 내역"); Gap(12); Tabs(listOf("전체", "적립", "사용"), vm.walletTab, vm::chooseWalletTab)
-        Gap(14); if (vm.walletTab != 1) Item("보드 업그레이드", "최근 활동", "-500P") {}
+        Text(vm.tr("지갑", "Wallet"), Modifier.fillMaxWidth(), color = White, textAlign = TextAlign.Center, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Gap(30); Eyebrow("My points"); Gap(10); Sub(vm.tr("내 포인트", "My points")); Text("${"%,d".format(vm.points)} P", color = White, fontSize = 36.sp, fontWeight = FontWeight.Bold); Sub(vm.tr("나의 도전이 차곡차곡 쌓이는 곳", "Where your challenges add up"))
+        Gap(22); Text(vm.tr("체험 포인트 · 현금이나 토큰으로 교환할 수 없어요", "Demo points · cannot be exchanged for cash or tokens"), color = Muted, fontSize = 12.sp)
+        Gap(35); H2(vm.tr("포인트 내역", "Point history")); Gap(12); Tabs(listOf(vm.tr("전체", "All"), vm.tr("적립", "Earned"), vm.tr("사용", "Spent")), vm.walletTab, vm::chooseWalletTab)
+        Gap(14); if (vm.walletTab != 1) Item(vm.tr("보드 업그레이드", "Board upgrade"), vm.tr("최근 활동", "Recent activity"), "-500P") {}
         if (vm.walletTab != 2) {
-            if (vm.quizDone) Item("오늘의 퀴즈", "오늘", "+20P") {}
-            if (vm.lessonDone) Item("Web3 학습", "오늘", "+30P") {}
-            if (vm.checkedIn) Item("출석 체크", "오늘", "+10P") {}
-            Item("서핑 완료", "예시 기록", "+120P") {}
+            if (vm.quizDone) Item(vm.tr("오늘의 퀴즈", "Daily quiz"), vm.tr("오늘", "Today"), "+20P") {}
+            if (vm.lessonDone) Item(vm.tr("Web3 학습", "Web3 lesson"), vm.tr("오늘", "Today"), "+30P") {}
+            if (vm.checkedIn) Item(vm.tr("출석 체크", "Check in"), vm.tr("오늘", "Today"), "+10P") {}
+            Item(vm.tr("서핑 완료", "Surf completed"), vm.tr("예시 기록", "Example entry"), "+120P") {}
         }
     }
 }
 
-@Composable private fun BoardScreen(vm: SurfViewModel) = Page("내 보드", vm) {
+@Composable private fun BoardScreen(vm: SurfViewModel) = Page(vm.tr("내 보드", "My board"), vm) {
     var confirm by remember { mutableStateOf(false) }
-    if (confirm) AlertDialog(onDismissRequest = { confirm = false }, title = { Text("보드 업그레이드") },
-        text = { Text("체험 포인트 500P를 사용하여 보드를 Lv. ${vm.boardLevel+1}로 올릴까요?") },
-        confirmButton = { TextButton(onClick = { confirm = false; vm.upgrade() }) { Text("업그레이드") } },
-        dismissButton = { TextButton(onClick = { confirm = false }) { Text("취소") } }, containerColor = Card)
+    if (confirm) AlertDialog(onDismissRequest = { confirm = false }, title = { Text(vm.tr("보드 업그레이드", "Upgrade board")) },
+        text = { Text(vm.tr("체험 포인트 500P를 사용하여 보드를 Lv. ${vm.boardLevel+1}로 올릴까요?", "Spend 500 demo points to upgrade your board to Lv. ${vm.boardLevel+1}?")) },
+        confirmButton = { TextButton(onClick = { confirm = false; vm.upgrade() }) { Text(vm.tr("업그레이드", "Upgrade")) } },
+        dismissButton = { TextButton(onClick = { confirm = false }) { Text(vm.tr("취소", "Cancel")) } }, containerColor = Card)
     Eyebrow("Your board"); Gap(8); H1("Mint Wave"); Sub("LEVEL ${"%02d".format(vm.boardLevel)}")
     Gap(20); Box(Modifier.fillMaxWidth().height(270.dp).background(Card, RoundedCornerShape(25.dp)), contentAlignment = Alignment.Center) {
         Box(Modifier.width(90.dp).height(220.dp).background(Mint, RoundedCornerShape(48.dp)), contentAlignment = Alignment.Center) { Text("〰\n〰\n〰", color = Bg, textAlign = TextAlign.Center, fontSize = 25.sp) }
     }
-    Gap(20); Surface { H2("다음 파도를 향해"); Sub("보드를 한 단계 성장시켜요."); Gap(12); Text("Lv. ${vm.boardLevel+1}   ·   500P", color = Mint, fontWeight = FontWeight.Bold); Sub("보유 포인트  ${"%,d".format(vm.points)}P") }
-    Gap(24); Primary("500P로 업그레이드") { confirm = true }
+    Gap(20); Surface { H2(vm.tr("다음 파도를 향해", "Toward the next wave")); Sub(vm.tr("보드를 한 단계 성장시켜요.", "Take your board to the next level.")); Gap(12); Text("Lv. ${vm.boardLevel+1}   ·   500P", color = Mint, fontWeight = FontWeight.Bold); Sub(vm.tr("보유 포인트  ${"%,d".format(vm.points)}P", "Balance  ${"%,d".format(vm.points)}P")) }
+    Gap(24); Primary(vm.tr("500P로 업그레이드", "Upgrade for 500P")) { confirm = true }
 }
 
-@Composable private fun Ranking(vm: SurfViewModel) = Page("랭킹", vm) {
-    Eyebrow("Weekly leaderboard"); Gap(8); H1("이번 주의 서퍼"); Sub("주간 활동 포인트 · 예시 순위")
-    Gap(22); Tabs(listOf("전체", "내 크루"), vm.rankingTab, vm::chooseRankingTab)
-    Gap(26); listOf("1  Neo          2,140P", "2  Jin             1,870P", "3  Mina         1,730P", "4  Sora          1,650P", "5  Leo            1,520P", "6  Yuna          1,410P").forEach { s -> Item(s, "이번 주 활동", "☆") {} }
-    Gap(16); Surface { H2("24  Wave Rider  ·  나"); Text("480P", color = Mint) }
+@Composable private fun Ranking(vm: SurfViewModel) = Page(vm.tr("랭킹", "Ranking"), vm) {
+    Eyebrow("Weekly leaderboard"); Gap(8); H1(vm.tr("이번 주의 서퍼", "Surfers this week")); Sub(vm.tr("주간 활동 포인트 · 예시 순위", "Weekly activity points · example ranking"))
+    Gap(22); Tabs(listOf(vm.tr("전체", "All"), vm.tr("내 크루", "My crew")), vm.rankingTab, vm::chooseRankingTab)
+    Gap(26); listOf("1  Neo          2,140P", "2  Jin             1,870P", "3  Mina         1,730P", "4  Sora          1,650P", "5  Leo            1,520P", "6  Yuna          1,410P").forEach { s -> Item(s, vm.tr("이번 주 활동", "This week's activity"), "☆") {} }
+    Gap(16); Surface { H2(vm.tr("24  Wave Rider  ·  나", "24  Wave Rider  ·  Me")); Text("480P", color = Mint) }
 }
 
-@Composable private fun Profile(vm: SurfViewModel, openUrl: (String) -> Unit) = Page("마이 SurfX", vm) {
+@Composable private fun Profile(vm: SurfViewModel, openUrl: (String) -> Unit) = Page(vm.tr("마이 SurfX", "My SurfX"), vm) {
+    var languageDialog by remember { mutableStateOf(false) }
+    if (languageDialog) AlertDialog(onDismissRequest = { languageDialog = false },
+        title = { Text("Language / 언어") },
+        text = { Column {
+            listOf("ko" to "한국어", "en" to "English").forEach { (code, label) ->
+                Row(Modifier.fillMaxWidth().clickable { vm.chooseLanguage(code); languageDialog = false }.padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(selected = vm.language == code, onClick = { vm.chooseLanguage(code); languageDialog = false })
+                    Text(label, color = White)
+                }
+            }
+        } },
+        confirmButton = { TextButton(onClick = { languageDialog = false }) { Text(vm.tr("닫기", "Close")) } }, containerColor = Card)
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(56.dp).background(CardAlt, RoundedCornerShape(50)), contentAlignment = Alignment.Center) { Text("W", color = Mint, fontSize = 20.sp) }
-        Spacer(Modifier.width(12.dp)); Column { H2("Wave Rider"); Sub("@wave.rider · 체험 프로필") }
+        Spacer(Modifier.width(12.dp)); Column { H2("Wave Rider"); Sub(vm.tr("@wave.rider · 체험 프로필", "@wave.rider · demo profile")) }
     }
-    Gap(24); Surface { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("18\n완료한 미션", color = White); Text("7일\n최고 연속 출석", color = White); Text("${vm.boardLevel}\n보드 레벨", color = White) } }
-    Gap(22); H2("나의 배지"); Gap(8); Item("첫 서핑 · 꾸준한 도전 · 퀴즈 마스터", "예시 배지") {}
-    Gap(22); Item("알림 설정", "체험 모드") { vm.showNotice("알림 기능은 준비 중이에요") }
-    Item("계정 및 보안", "로컬 체험 데이터") { vm.showNotice("계정 연동은 준비 중이에요") }
-    Item("개인정보 처리방침", "neocode.cloud") { openUrl("https://neocode.cloud/private_privacy.html") }
-    Item("서비스 약관", "neocode.cloud") { openUrl("https://neocode.cloud/term_of_service.html") }
-    Gap(18); Sub("SurfX 1.0.0 · 내부 테스트용 체험 앱"); Gap(10)
-    Secondary("시작 화면으로") { vm.logout() }
+    Gap(24); Surface { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(vm.tr("18\n완료한 미션", "18\nmissions done"), color = White); Text(vm.tr("7일\n최고 연속 출석", "7 days\nbest streak"), color = White); Text(vm.tr("${vm.boardLevel}\n보드 레벨", "${vm.boardLevel}\nboard level"), color = White) } }
+    Gap(22); H2(vm.tr("나의 배지", "My badges")); Gap(8); Item(vm.tr("첫 서핑 · 꾸준한 도전 · 퀴즈 마스터", "First surf · Steady progress · Quiz master"), vm.tr("예시 배지", "Example badges")) {}
+    Gap(22); Item("Language / 언어", if (vm.language == "en") "English" else "한국어") { languageDialog = true }
+    Item(vm.tr("알림 설정", "Notifications"), vm.tr("체험 모드", "Demo mode")) { vm.showNotice(vm.tr("알림 기능은 준비 중이에요", "Notifications are coming soon")) }
+    Item(vm.tr("계정 및 보안", "Account and security"), vm.tr("로컬 체험 데이터", "Local demo data")) { vm.showNotice(vm.tr("계정 연동은 준비 중이에요", "Account linking is coming soon")) }
+    Item(vm.tr("개인정보 처리방침", "Privacy policy"), "neocode.cloud") { openUrl("https://neocode.cloud/private_privacy.html") }
+    Item(vm.tr("서비스 약관", "Terms of service"), "neocode.cloud") { openUrl("https://neocode.cloud/term_of_service.html") }
+    Gap(18); Sub(vm.tr("SurfX 1.0.7 · 내부 테스트용 체험 앱", "SurfX 1.0.7 · Internal test demo")); Gap(10)
+    Secondary(vm.tr("시작 화면으로", "Back to welcome")) { vm.logout() }
     Gap(12); Image(painterResource(R.drawable.neocode_logo), "neocode", Modifier.height(28.dp))
 }

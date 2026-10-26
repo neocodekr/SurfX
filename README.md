@@ -6,6 +6,8 @@ Android application for the supplied SurfX 14-screen mobile concept. Package: `c
 
 - Compose navigation for welcome, home (idle and surfing), check-in, missions, lesson, quiz, result, crew, invite, wallet, board, ranking, and profile.
 - Local demo state for points, daily check-in, lesson, quiz, board upgrades, and 24-hour surfing. Reward actions cannot be repeated on the same day.
+- The Korean and English blockchain question banks are bundled under `app/src/main/assets/quiz/` (1,200 questions per language). The daily quiz selects a question from the bank; Missions offers practice across all questions with difficulty and question-type filters. Answers are checked by stable option ID, and explanations and learning objectives are shown after submission.
+- Profile → Language / 언어 switches between Korean and English, persists on this device, and keeps the current question ID when switched mid-quiz.
 - Test AdMob banner, optional rewarded ad and exit-dialog native ad, UMP consent flow, remote version check, privacy and terms links.
 - Signed, minified AAB for Google Play internal testing. Dependency native libraries are limited to 64-bit ARM and x86.
 
