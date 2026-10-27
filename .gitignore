@@ -3,6 +3,8 @@
 .idea/
 **/build/
 dist/
+website/node_modules/
+website/dist/
 local.properties
 *.aab
 *.apk

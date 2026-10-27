@@ -1,5 +1,20 @@
 # SurfX Protocol
 
+## Website (Vue / GitHub Pages)
+
+The bilingual SurfX introduction and whitepaper are in [`website/`](website/). The site uses Vue 3 and Vite, with a `/SurfX/` base path for GitHub Pages.
+
+```powershell
+cd website
+npm ci
+npm run dev
+npm run build
+```
+
+The production files are generated in `website/dist/`. The workflow in `.github/workflows/pages.yml` builds and deploys them automatically when `main` changes. In the GitHub repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. The published address is `https://neocodekr.github.io/SurfX/`.
+
+The website whitepaper describes the current product concept and implementation. App points are local demo data; it does not claim a live token or on-chain reward system.
+
 Android application for the supplied SurfX 14-screen mobile concept. Package: `com.neocode.surfx`.
 
 ## What works
