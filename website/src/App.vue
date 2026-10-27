@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const asset = (name) => `${import.meta.env.BASE_URL}${name}`
+const whitepaperUrl = 'https://whitepaper.surfx-protocol.com/'
 const lang = ref(localStorage.getItem('surfx-language') === 'en' ? 'en' : 'ko')
 const route = ref(window.location.hash.startsWith('#/whitepaper') ? 'whitepaper' : 'home')
 const menuOpen = ref(false)
@@ -119,7 +120,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
         <button @click="goTo('about')">{{ t.nav[0] }}</button>
         <button @click="goTo('experience')">{{ t.nav[1] }}</button>
         <button @click="goTo('preview')">{{ t.nav[2] }}</button>
-        <a href="#/whitepaper" @click="syncRoute">{{ t.nav[3] }}</a>
+        <a :href="whitepaperUrl">{{ t.nav[3] }}</a>
       </nav>
       <div class="header-actions">
         <div class="language-switch" :aria-label="lang === 'ko' ? '언어 선택' : 'Choose language'">
@@ -128,7 +129,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
         <button class="menu-toggle" @click="menuOpen = !menuOpen" :aria-expanded="menuOpen" :aria-label="lang === 'ko' ? '메뉴 열기' : 'Open menu'">{{ menuOpen ? '✕' : '☰' }}</button>
       </div>
       <nav v-if="menuOpen" class="mobile-nav">
-        <button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><button @click="goTo('preview')">{{ t.nav[2] }}</button><a href="#/whitepaper" @click="syncRoute">{{ t.nav[3] }}</a>
+        <button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><button @click="goTo('preview')">{{ t.nav[2] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a>
       </nav>
     </header>
 
@@ -140,7 +141,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
             <p class="eyebrow"><span class="eyebrow-line"></span>{{ t.eyebrow }}</p>
             <h1>{{ t.hero1 }}<br><em>{{ t.hero2 }}</em></h1>
             <p class="hero-body">{{ t.heroBody }}</p>
-            <div class="button-row"><button class="btn btn-primary" @click="goTo('about')">{{ t.heroCta }} <span>↗</span></button><a class="btn btn-text" href="#/whitepaper" @click="syncRoute">{{ t.paperCta }} <span>↗</span></a></div>
+            <div class="button-row"><button class="btn btn-primary" @click="goTo('about')">{{ t.heroCta }} <span>↗</span></button><a class="btn btn-text" :href="whitepaperUrl">{{ t.paperCta }} <span>↗</span></a></div>
           </div>
           <div class="hero-art" aria-hidden="true"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><img :src="asset('wave.webp')" alt=""><span class="art-glint glint-one">✳</span><span class="art-glint glint-two">✦</span></div>
         </div>
@@ -160,11 +161,11 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 
       <section class="faq-section" id="faq"><div class="container faq-layout"><div><p class="kicker">{{ t.faqKicker }}</p><h2>{{ t.faqTitle }}</h2></div><div class="faq-list"><div v-for="(faq, i) in t.faqs" :key="i" class="faq-item"><button @click="openFaq = openFaq === i ? -1 : i" :aria-expanded="openFaq === i"><span>{{ faq.q }}</span><span class="faq-sign">{{ openFaq === i ? '−' : '+' }}</span></button><p v-if="openFaq === i">{{ faq.a }}</p></div></div></div></section>
 
-      <section class="closing"><div class="container closing-inner"><p class="kicker">{{ t.ctaKicker }}</p><h2 class="multiline">{{ t.ctaTitle }}</h2><p>{{ t.ctaBody }}</p><a class="btn btn-primary" href="#/whitepaper" @click="syncRoute">{{ t.paperCta }} <span>↗</span></a><div class="closing-wave" aria-hidden="true">∿</div></div></section>
+      <section class="closing"><div class="container closing-inner"><p class="kicker">{{ t.ctaKicker }}</p><h2 class="multiline">{{ t.ctaTitle }}</h2><p>{{ t.ctaBody }}</p><a class="btn btn-primary" :href="whitepaperUrl">{{ t.paperCta }} <span>↗</span></a><div class="closing-wave" aria-hidden="true">∿</div></div></section>
     </main>
 
     <main v-else class="paper-main"><div class="container paper-intro"><p class="kicker">{{ t.paper.label }}</p><h1>{{ t.paper.title }}</h1><p>{{ t.paper.intro }}</p></div><div class="container paper-layout"><aside class="paper-sidebar"><span class="sidebar-title">CONTENTS</span><button v-for="section in t.paper.sections" :key="section.id" @click="scrollPaper(section.id)">{{ section.title }}</button></aside><div class="paper-articles"><section v-for="section in t.paper.sections" :id="section.id" :key="section.id"><h2>{{ section.title }}</h2><p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p></section><a class="repo-link" href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a></div></div></main>
 
-    <footer class="footer"><div class="container footer-top"><div><a class="brand" href="#/" @click="syncRoute"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a><p>{{ t.footerDesc }}</p></div><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a href="#/whitepaper" @click="syncRoute">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><div class="container footer-bottom"><span>© 2026 SurfX. All rights reserved.</span><button @click="goTo('top')">{{ t.top }} ↑</button></div></footer>
+    <footer class="footer"><div class="container footer-top"><div><a class="brand" href="#/" @click="syncRoute"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a><p>{{ t.footerDesc }}</p></div><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><div class="container footer-bottom"><span>© 2026 SurfX. All rights reserved.</span><button @click="goTo('top')">{{ t.top }} ↑</button></div></footer>
   </div>
 </template>
