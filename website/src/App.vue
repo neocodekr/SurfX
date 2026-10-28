@@ -166,6 +166,21 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 
     <main v-else class="paper-main"><div class="container paper-intro"><p class="kicker">{{ t.paper.label }}</p><h1>{{ t.paper.title }}</h1><p>{{ t.paper.intro }}</p></div><div class="container paper-layout"><aside class="paper-sidebar"><span class="sidebar-title">CONTENTS</span><button v-for="section in t.paper.sections" :key="section.id" @click="scrollPaper(section.id)">{{ section.title }}</button></aside><div class="paper-articles"><section v-for="section in t.paper.sections" :id="section.id" :key="section.id"><h2>{{ section.title }}</h2><p v-for="paragraph in section.paragraphs" :key="paragraph">{{ paragraph }}</p></section><a class="repo-link" href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a></div></div></main>
 
-    <footer class="footer"><div class="container footer-top"><div><a class="brand" href="#/" @click="syncRoute"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a><p>{{ t.footerDesc }}</p></div><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><div class="container footer-bottom"><span>© 2026 SurfX. All rights reserved.</span><button @click="goTo('top')">{{ t.top }} ↑</button></div></footer>
+    <footer class="footer">
+      <div class="container footer-partnership">
+        <div class="footer-partnership-copy"><span>THE TEAM BEHIND THE WAVE</span><p>{{ t.footerDesc }}</p></div>
+        <div class="footer-lockup">
+          <a class="brand" href="#/" @click="syncRoute" aria-label="SurfX home"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a>
+          <span class="footer-cross" aria-hidden="true">×</span>
+          <a class="neocode-logo" href="https://neocode.cloud/" target="_blank" rel="noopener noreferrer" aria-label="NEOCODE website"><img :src="asset('neocode_logo.png')" alt="NEOCODE"></a>
+        </div>
+      </div>
+      <div class="container footer-company-grid">
+        <section><span class="footer-label">COMPANY</span><h2>NEOCODE</h2><p>Representative: Eunseong Park</p></section>
+        <section><span class="footer-label">REGISTRATION</span><p>Business Registration No. 422-29-01059</p><p>E-Commerce Registration No. 2025-Seoul Guro-0315</p><p>D-U-N-S No. 963437563</p></section>
+        <section><span class="footer-label">CONTACT</span><address>Suite 702, 36, Gyeongin-ro 20na-gil,<br>Guro-gu, Seoul, Republic of Korea</address><p>Customer Support: <a href="tel:+821086741663">010-8674-1663</a></p></section>
+      </div>
+      <div class="container footer-bottom"><span>© 2026 SurfX × NEOCODE. All rights reserved.</span><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a><button @click="goTo('top')">{{ t.top }} ↑</button></div></div>
+    </footer>
   </div>
 </template>
