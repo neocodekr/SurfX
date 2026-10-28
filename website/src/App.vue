@@ -6,7 +6,6 @@ const whitepaperUrl = 'https://whitepaper.surfx-protocol.com/'
 const lang = ref(localStorage.getItem('surfx-language') === 'ko' ? 'ko' : 'en')
 const route = ref(window.location.hash.startsWith('#/whitepaper') ? 'whitepaper' : 'home')
 const menuOpen = ref(false)
-const openFaq = ref(0)
 
 const content = {
   ko: {
@@ -16,7 +15,6 @@ const content = {
     hero1: '작은 도전,', hero2: '새로운 파도.',
     heroBody: '매일 배우고, 가볍게 도전하고, 나만의 성장을 기록하세요. SurfX와 함께 오늘의 파도를 시작해 보세요.',
     heroCta: '경험 살펴보기', paperCta: '백서 읽기',
-    heroNote: 'SurfX 모바일 앱 컨셉트',
     strip: ['매일의 출석', '한 문제의 배움', '함께하는 크루', '나만의 보드'],
     aboutKicker: 'THE SURFX EXPERIENCE', aboutTitle: '매일 돌아오고 싶은\n작은 경험들',
     aboutBody: 'SurfX는 학습, 미션, 커뮤니티를 하나의 흐름으로 연결합니다. 하루에 몇 분씩 쌓아가는 활동이 더 큰 여정의 시작이 됩니다.',
@@ -32,13 +30,6 @@ const content = {
     appKicker: 'IN YOUR HANDS', appTitle: '파도를 손안에.',
     appBody: '오늘의 서핑을 시작하고, 미션을 고르고, 크루와 함께하세요. SurfX의 모바일 경험을 미리 만나보세요.',
     screens: ['오늘의 홈', '미션과 학습', '함께하는 크루'],
-    faqKicker: 'GOOD TO KNOW', faqTitle: '자주 묻는 질문',
-    faqs: [
-      { q: 'SurfX는 어떤 서비스인가요?', a: 'SurfX는 매일 출석, 서핑, 학습, 퀴즈, 크루 활동을 통해 참여 경험을 제공하는 모바일 앱 프로젝트입니다.' },
-      { q: '포인트를 현금이나 토큰으로 바꿀 수 있나요?', a: '현재 앱의 포인트와 보상은 기기 안에서 동작하는 체험 데이터입니다. 현금화, 토큰 교환, 온체인 지급 기능은 제공하지 않습니다.' },
-      { q: '한국어와 영어를 지원하나요?', a: '네. 웹사이트와 모바일 앱 모두 한국어와 영어를 지원합니다. 앱의 퀴즈 문제도 두 언어로 제공됩니다.' },
-      { q: '백서에는 무엇이 담겨 있나요?', a: 'SurfX의 경험 설계, 현재 앱 기능, 데이터 범위와 향후 구현 시 고려할 사항을 정리했습니다.' },
-    ],
     ctaKicker: 'READY TO RIDE?', ctaTitle: '다음 파도를\n함께 만들어가요.', ctaBody: 'SurfX가 그리고 있는 경험과 현재 구현 범위를 백서에서 자세히 살펴보세요.',
     footerDesc: '매일 배우고, 도전하고, 나만의 파도를 만드는 모바일 경험.',
     top: '맨 위로',
@@ -58,7 +49,7 @@ const content = {
     nav: ['About', 'Experience', 'App preview', 'Whitepaper'], explore: 'Explore SurfX',
     eyebrow: 'LEARN · EARN · SURF', hero1: 'Small steps.', hero2: 'New waves.',
     heroBody: 'Learn something new, take on a simple challenge, and see your progress grow. Start your wave with SurfX today.',
-    heroCta: 'Explore the experience', paperCta: 'Read the whitepaper', heroNote: 'SurfX mobile app concept',
+    heroCta: 'Explore the experience', paperCta: 'Read the whitepaper',
     strip: ['Daily check-ins', 'A little learning', 'A crew to share with', 'Your own board'],
     aboutKicker: 'THE SURFX EXPERIENCE', aboutTitle: 'Small experiences\nworth returning to',
     aboutBody: 'SurfX brings learning, missions, and community into one flow. A few minutes of activity each day can be the start of a bigger journey.',
@@ -74,13 +65,6 @@ const content = {
     appKicker: 'IN YOUR HANDS', appTitle: 'A wave in your pocket.',
     appBody: 'Start today’s surf, choose a mission, and connect with your crew. Take a look at the SurfX mobile experience.',
     screens: ['Your daily home', 'Missions and learning', 'Your crew'],
-    faqKicker: 'GOOD TO KNOW', faqTitle: 'Frequently asked questions',
-    faqs: [
-      { q: 'What is SurfX?', a: 'SurfX is a mobile app project built around daily check-ins, surfing, learning, quizzes, and crew activities.' },
-      { q: 'Can points be redeemed for cash or tokens?', a: 'No. Points and rewards in the current app are demo data stored on your device. Cash redemption, token swaps, and on-chain payouts are not available.' },
-      { q: 'Is SurfX available in Korean and English?', a: 'Yes. Both the website and mobile app support Korean and English. The app also includes quiz banks in both languages.' },
-      { q: 'What is in the whitepaper?', a: 'It outlines the SurfX experience, current app features, data boundaries, and considerations for future implementation.' },
-    ],
     ctaKicker: 'READY TO RIDE?', ctaTitle: 'Let’s make the\nnext wave together.', ctaBody: 'Explore the SurfX product experience and its current scope in the whitepaper.',
     footerDesc: 'A mobile experience for learning, exploring, and making your own wave every day.', top: 'Back to top',
     paper: {
@@ -145,7 +129,6 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
           </div>
           <div class="hero-art" aria-hidden="true"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><img :src="asset('wave.webp')" alt=""><span class="art-glint glint-one">✳</span><span class="art-glint glint-two">✦</span></div>
         </div>
-        <div class="hero-bottom container"><span>SCROLL TO EXPLORE ↓</span><span>{{ t.heroNote }} · 2026</span></div>
       </section>
 
       <div class="ticker"><div class="ticker-inner"><template v-for="n in 2" :key="n"><span v-for="item in t.strip" :key="`${n}-${item}`">✳ &nbsp; {{ item }}</span></template></div></div>
@@ -159,7 +142,6 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 
       <section class="preview section-pad container" id="preview"><div class="preview-heading"><div><p class="kicker">{{ t.appKicker }}</p><h2>{{ t.appTitle }}</h2></div><p>{{ t.appBody }}</p></div><div class="screen-grid"><figure v-for="(screen, i) in ['screen-home.png', 'screen-missions.png', 'screen-crew.png']" :key="screen"><div class="screen-frame"><img :src="asset(screen)" :alt="t.screens[i]" loading="lazy"></div><figcaption><span>0{{ i + 1 }}</span> {{ t.screens[i] }}</figcaption></figure></div></section>
 
-      <section class="faq-section" id="faq"><div class="container faq-layout"><div><p class="kicker">{{ t.faqKicker }}</p><h2>{{ t.faqTitle }}</h2></div><div class="faq-list"><div v-for="(faq, i) in t.faqs" :key="i" class="faq-item"><button @click="openFaq = openFaq === i ? -1 : i" :aria-expanded="openFaq === i"><span>{{ faq.q }}</span><span class="faq-sign">{{ openFaq === i ? '−' : '+' }}</span></button><p v-if="openFaq === i">{{ faq.a }}</p></div></div></div></section>
 
       <section class="closing"><div class="container closing-inner"><p class="kicker">{{ t.ctaKicker }}</p><h2 class="multiline">{{ t.ctaTitle }}</h2><p>{{ t.ctaBody }}</p><a class="btn btn-primary" :href="whitepaperUrl">{{ t.paperCta }} <span>↗</span></a><div class="closing-wave" aria-hidden="true">∿</div></div></section>
     </main>
@@ -168,12 +150,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 
     <footer class="footer">
       <div class="container footer-partnership">
-        <div class="footer-partnership-copy"><span>THE TEAM BEHIND THE WAVE</span><p>{{ t.footerDesc }}</p></div>
-        <div class="footer-lockup">
-          <a class="brand" href="#/" @click="syncRoute" aria-label="SurfX home"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a>
-          <span class="footer-cross" aria-hidden="true">×</span>
-          <a class="neocode-logo" href="https://neocode.cloud/" target="_blank" rel="noopener noreferrer" aria-label="NEOCODE website"><img :src="asset('neocode_logo.png')" alt="NEOCODE"></a>
-        </div>
+        <img class="footer-collab-logo" :src="asset('surfx-neocode-collab.png')" alt="SurfX × NEOCODE" />
       </div>
       <div class="container footer-company-grid">
         <section><span class="footer-label">COMPANY</span><h2>NEOCODE</h2><p>Representative: Eunseong Park</p></section>
