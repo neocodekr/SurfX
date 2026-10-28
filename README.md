@@ -1,8 +1,8 @@
-# SurfX Protocol
+# SurfK Protocol
 
 ## Website (Vue / GitHub Pages)
 
-The bilingual SurfX introduction is in [`website/`](website/). The site uses Vue 3 and Vite, with a `/` base path for the custom domain `www.surfx-protocol.com`. The whitepaper is deployed separately from [SurfX-whitepaper](https://github.com/neocodekr/SurfX-whitepaper) at `whitepaper.surfx-protocol.com`.
+The bilingual SurfK introduction is in [`website/`](website/). The site uses Vue 3 and Vite, with a `/` base path for the custom domain `www.surfx-protocol.com`. The whitepaper is deployed separately from [SurfK-whitepaper](https://github.com/neocodekr/SurfX-whitepaper) at `whitepaper.surfx-protocol.com`.
 
 ```powershell
 cd website
@@ -15,7 +15,7 @@ The production files are generated in `website/dist/`. The workflow in `.github/
 
 The website whitepaper describes the current product concept and implementation. App points are local demo data; it does not claim a live token or on-chain reward system.
 
-Android application for the supplied SurfX 14-screen mobile concept. Package: `com.neocode.surfx`.
+Android application for the supplied SurfK 14-screen mobile concept. Package: `com.neocode.surfx`.
 
 ## What works
 
@@ -34,4 +34,4 @@ The design materials are a static concept. This build labels its balances, rewar
 
 The existing Play upload key is `D:/ai/keystore/surfx-upload.jks`, alias `surfx`. Set `SURFX_STORE_PASSWORD` and `SURFX_KEY_PASSWORD` as environment variables, then run `gradle :app:bundleRelease`. Never commit passwords or the service-account JSON.
 
-The 512 x 512 launcher artwork is [surfx_icon_512.png](surfx_icon_512.png). The original supplied screens remain under `design/SurfX_UI/` for visual comparison.
+The 512 x 512 launcher artwork is [surfk_icon_512.png](surfk_icon_512.png). The updated concept screens remain under `design/SurfK_UI/` for visual comparison.

@@ -1,11 +1,11 @@
-"""Render the SurfX website's single wave mark as a 512 × 512 PNG."""
+"""Render the SurfK website's single wave mark as a 512 × 512 PNG."""
 
 from pathlib import Path
 from PIL import Image, ImageDraw
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "surfx_logo_icon_512.png"
+OUTPUT = ROOT / "surfk_logo_icon_512.png"
 SIZE = 512
 SCALE = 4
 BACKGROUND = (7, 23, 27)

@@ -10,14 +10,14 @@ const menuOpen = ref(false)
 const content = {
   ko: {
     nav: ['소개', '경험', '앱 미리보기', '백서'],
-    explore: 'SurfX 알아보기',
+    explore: 'SurfK 알아보기',
     eyebrow: 'LEARN · EARN · SURF',
     hero1: '작은 도전,', hero2: '새로운 파도.',
-    heroBody: '매일 배우고, 가볍게 도전하고, 나만의 성장을 기록하세요. SurfX와 함께 오늘의 파도를 시작해 보세요.',
+    heroBody: '매일 배우고, 가볍게 도전하고, 나만의 성장을 기록하세요. SurfK와 함께 오늘의 파도를 시작해 보세요.',
     heroCta: '경험 살펴보기', paperCta: '백서 읽기',
     strip: ['매일의 출석', '한 문제의 배움', '함께하는 크루', '나만의 보드'],
-    aboutKicker: 'THE SURFX EXPERIENCE', aboutTitle: '매일 돌아오고 싶은\n작은 경험들',
-    aboutBody: 'SurfX는 학습, 미션, 커뮤니티를 하나의 흐름으로 연결합니다. 하루에 몇 분씩 쌓아가는 활동이 더 큰 여정의 시작이 됩니다.',
+    aboutKicker: 'THE SURFK EXPERIENCE', aboutTitle: '매일 돌아오고 싶은\n작은 경험들',
+    aboutBody: 'SurfK는 학습, 미션, 커뮤니티를 하나의 흐름으로 연결합니다. 하루에 몇 분씩 쌓아가는 활동이 더 큰 여정의 시작이 됩니다.',
     steps: [
       { n: '01', icon: '◷', title: '매일 접속하기', body: '출석 체크와 24시간 서핑으로 나만의 리듬을 만들어요.' },
       { n: '02', icon: '✳', title: '배우고 도전하기', body: '블록체인 퀴즈와 짧은 학습으로 새로운 개념을 익혀요.' },
@@ -28,31 +28,31 @@ const content = {
     featureItems: ['일일 출석과 연속 기록', '배우면서 푸는 블록체인 퀴즈', '친구와 함께하는 크루', '포인트로 성장하는 보드'],
     demo: '현재 앱의 포인트와 보상은 기기에 저장되는 체험 데이터입니다.',
     appKicker: 'IN YOUR HANDS', appTitle: '파도를 손안에.',
-    appBody: '오늘의 서핑을 시작하고, 미션을 고르고, 크루와 함께하세요. SurfX의 모바일 경험을 미리 만나보세요.',
+    appBody: '오늘의 서핑을 시작하고, 미션을 고르고, 크루와 함께하세요. SurfK의 모바일 경험을 미리 만나보세요.',
     screens: ['오늘의 홈', '미션과 학습', '함께하는 크루'],
-    ctaKicker: 'READY TO RIDE?', ctaTitle: '다음 파도를\n함께 만들어가요.', ctaBody: 'SurfX가 그리고 있는 경험과 현재 구현 범위를 백서에서 자세히 살펴보세요.',
+    ctaKicker: 'READY TO RIDE?', ctaTitle: '다음 파도를\n함께 만들어가요.', ctaBody: 'SurfK가 그리고 있는 경험과 현재 구현 범위를 백서에서 자세히 살펴보세요.',
     footerDesc: '매일 배우고, 도전하고, 나만의 파도를 만드는 모바일 경험.',
     top: '맨 위로',
     paper: {
-      label: 'SURFX DOCUMENTATION', title: 'SurfX 백서', intro: 'SurfX의 제품 경험과 현재 구현 범위를 설명하는 문서입니다. 이 문서는 앱의 상태를 기준으로 작성된 제품 개요이며, 투자 제안이나 토큰 발행 계획이 아닙니다.',
+      label: 'SURFK DOCUMENTATION', title: 'SurfK 백서', intro: 'SurfK의 제품 경험과 현재 구현 범위를 설명하는 문서입니다. 이 문서는 앱의 상태를 기준으로 작성된 제품 개요이며, 투자 제안이나 토큰 발행 계획이 아닙니다.',
       sections: [
-        { id: 'overview', title: '01. 개요', paragraphs: ['SurfX는 매일 반복할 수 있는 작은 참여 경험을 중심에 둔 모바일 앱 프로젝트입니다. 서핑 타이머, 출석 체크, 학습과 퀴즈, 크루와 보드 성장을 하나의 여정으로 묶었습니다.', '목표는 복잡한 개념을 가볍게 배우고, 일상의 활동을 시각적인 성장 경험으로 연결하는 것입니다.'] },
+        { id: 'overview', title: '01. 개요', paragraphs: ['SurfK는 매일 반복할 수 있는 작은 참여 경험을 중심에 둔 모바일 앱 프로젝트입니다. 서핑 타이머, 출석 체크, 학습과 퀴즈, 크루와 보드 성장을 하나의 여정으로 묶었습니다.', '목표는 복잡한 개념을 가볍게 배우고, 일상의 활동을 시각적인 성장 경험으로 연결하는 것입니다.'] },
         { id: 'experience', title: '02. 사용자 경험', paragraphs: ['사용자는 하루의 서핑을 시작하고, 출석을 완료하고, 블록체인 학습과 퀴즈에 참여할 수 있습니다. 미션, 크루, 랭킹, 보드 화면은 일일 참여와 진행 상황을 한눈에 보여줍니다.', '앱은 한국어와 영어를 지원하며, 언어별 블록체인 퀴즈 문제 은행을 내장하고 있습니다.'] },
         { id: 'rewards', title: '03. 포인트와 보드', paragraphs: ['현재 앱의 포인트, 출석, 학습, 퀴즈 결과와 보드 레벨은 기기에 저장되는 데모 상태입니다. 일일 보상은 같은 날 반복 수령되지 않도록 설계되어 있습니다.', '포인트는 앱 안에서 보드 성장 체험에 사용됩니다. 실제 가치, 현금화, 토큰 교환 또는 블록체인 자산을 의미하지 않습니다.'] },
         { id: 'architecture', title: '04. 현재 구현 범위', paragraphs: ['Android 앱은 Jetpack Compose로 구현되어 있으며 환영, 홈, 출석, 미션, 학습, 퀴즈, 크루, 초대, 지갑, 보드, 랭킹, 프로필 화면을 포함합니다.', '현재 서버 계정, 실시간 보상 동기화, 토큰 지갑 연결, 온체인 보상 지급은 구현되지 않았습니다. 이 기능을 제공하려면 인증, 데이터 저장, 부정 사용 방지와 운영 정책을 별도로 설계해야 합니다.'] },
         { id: 'principles', title: '05. 제품 원칙', paragraphs: ['짧고 명확한 일일 활동, 이해하기 쉬운 진행 상황, 두 언어에서 일관된 경험을 제품 설계의 기준으로 삼습니다.', '보상이나 수치가 예시인 경우 이를 명확히 표시하고, 실제 기능의 범위를 과장하지 않습니다.'] },
-        { id: 'faq', title: '06. 안내', paragraphs: ['이 문서는 SurfX 모바일 앱과 웹사이트의 제품 소개를 위한 초안입니다. 기능, 화면, 정책은 개발과 검증 과정에서 달라질 수 있습니다.', '문의와 협업 관련 정보는 프로젝트 GitHub 저장소를 통해 확인할 수 있습니다.'] },
+        { id: 'faq', title: '06. 안내', paragraphs: ['이 문서는 SurfK 모바일 앱과 웹사이트의 제품 소개를 위한 초안입니다. 기능, 화면, 정책은 개발과 검증 과정에서 달라질 수 있습니다.', '문의와 협업 관련 정보는 프로젝트 GitHub 저장소를 통해 확인할 수 있습니다.'] },
       ],
     },
   },
   en: {
-    nav: ['About', 'Experience', 'App preview', 'Whitepaper'], explore: 'Explore SurfX',
+    nav: ['About', 'Experience', 'App preview', 'Whitepaper'], explore: 'Explore SurfK',
     eyebrow: 'LEARN · EARN · SURF', hero1: 'Small steps.', hero2: 'New waves.',
-    heroBody: 'Learn something new, take on a simple challenge, and see your progress grow. Start your wave with SurfX today.',
+    heroBody: 'Learn something new, take on a simple challenge, and see your progress grow. Start your wave with SurfK today.',
     heroCta: 'Explore the experience', paperCta: 'Read the whitepaper',
     strip: ['Daily check-ins', 'A little learning', 'A crew to share with', 'Your own board'],
-    aboutKicker: 'THE SURFX EXPERIENCE', aboutTitle: 'Small experiences\nworth returning to',
-    aboutBody: 'SurfX brings learning, missions, and community into one flow. A few minutes of activity each day can be the start of a bigger journey.',
+    aboutKicker: 'THE SURFK EXPERIENCE', aboutTitle: 'Small experiences\nworth returning to',
+    aboutBody: 'SurfK brings learning, missions, and community into one flow. A few minutes of activity each day can be the start of a bigger journey.',
     steps: [
       { n: '01', icon: '◷', title: 'Show up daily', body: 'Build your own rhythm with check-ins and a 24-hour surf.' },
       { n: '02', icon: '✳', title: 'Learn and play', body: 'Explore new ideas through short lessons and blockchain quizzes.' },
@@ -63,19 +63,19 @@ const content = {
     featureItems: ['Daily check-ins and streaks', 'Learn through blockchain quizzes', 'A crew to ride with', 'A board that grows with points'],
     demo: 'Points and rewards in the current app are demo data stored on your device.',
     appKicker: 'IN YOUR HANDS', appTitle: 'A wave in your pocket.',
-    appBody: 'Start today’s surf, choose a mission, and connect with your crew. Take a look at the SurfX mobile experience.',
+    appBody: 'Start today’s surf, choose a mission, and connect with your crew. Take a look at the SurfK mobile experience.',
     screens: ['Your daily home', 'Missions and learning', 'Your crew'],
-    ctaKicker: 'READY TO RIDE?', ctaTitle: 'Let’s make the\nnext wave together.', ctaBody: 'Explore the SurfX product experience and its current scope in the whitepaper.',
+    ctaKicker: 'READY TO RIDE?', ctaTitle: 'Let’s make the\nnext wave together.', ctaBody: 'Explore the SurfK product experience and its current scope in the whitepaper.',
     footerDesc: 'A mobile experience for learning, exploring, and making your own wave every day.', top: 'Back to top',
     paper: {
-      label: 'SURFX DOCUMENTATION', title: 'SurfX Whitepaper', intro: 'A guide to the SurfX product experience and its current implementation. This is a product overview based on the app’s current state, not an investment offer or token issuance plan.',
+      label: 'SURFK DOCUMENTATION', title: 'SurfK Whitepaper', intro: 'A guide to the SurfK product experience and its current implementation. This is a product overview based on the app’s current state, not an investment offer or token issuance plan.',
       sections: [
-        { id: 'overview', title: '01. Overview', paragraphs: ['SurfX is a mobile app project built around small, repeatable daily experiences. It brings a surf timer, check-ins, learning and quizzes, crews, and board progression into one journey.', 'Its goal is to make new concepts approachable and turn everyday participation into a visible sense of progress.'] },
+        { id: 'overview', title: '01. Overview', paragraphs: ['SurfK is a mobile app project built around small, repeatable daily experiences. It brings a surf timer, check-ins, learning and quizzes, crews, and board progression into one journey.', 'Its goal is to make new concepts approachable and turn everyday participation into a visible sense of progress.'] },
         { id: 'experience', title: '02. User experience', paragraphs: ['Users can start a daily surf, complete a check-in, and take part in blockchain lessons and quizzes. Missions, crew, ranking, and board screens bring activities and progress together.', 'The app supports Korean and English and bundles a blockchain quiz bank for each language.'] },
         { id: 'rewards', title: '03. Points and boards', paragraphs: ['Points, check-ins, lesson and quiz outcomes, and board levels are currently demo state saved on the device. Daily rewards are designed to prevent repeated claims on the same day.', 'Points are used for board progression inside the app. They do not represent real value, cash redemption, token conversion, or blockchain assets.'] },
         { id: 'architecture', title: '04. Current implementation', paragraphs: ['The Android app is built with Jetpack Compose and includes welcome, home, check-in, missions, learning, quiz, crew, invite, wallet, board, ranking, and profile screens.', 'Server accounts, live reward synchronization, token wallet connections, and on-chain payouts are not implemented. Those features would require separate authentication, storage, abuse prevention, and operating policies.'] },
         { id: 'principles', title: '05. Product principles', paragraphs: ['Short, clear daily actions, understandable progress, and a consistent experience across both languages guide the product design.', 'Example rewards and figures should be identified clearly, and the scope of live functionality should be described accurately.'] },
-        { id: 'faq', title: '06. Notes', paragraphs: ['This document introduces the SurfX mobile app and website. Features, screens, and policies may change during development and validation.', 'For project information or collaboration, visit the GitHub repository.'] },
+        { id: 'faq', title: '06. Notes', paragraphs: ['This document introduces the SurfK mobile app and website. Features, screens, and policies may change during development and validation.', 'For project information or collaboration, visit the GitHub repository.'] },
       ],
     },
   },
@@ -91,7 +91,7 @@ function goTo(id) {
   menuOpen.value = false
 }
 function scrollPaper(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }
-watch(lang, value => { document.documentElement.lang = value; document.title = value === 'ko' ? 'SurfX — 작은 도전, 새로운 파도' : 'SurfX — Small steps. New waves.' })
+watch(lang, value => { document.documentElement.lang = value; document.title = value === 'ko' ? 'SurfK — 작은 도전, 새로운 파도' : 'SurfK — Small steps. New waves.' })
 onMounted(() => { window.addEventListener('hashchange', syncRoute); document.documentElement.lang = lang.value })
 onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 </script>
@@ -99,7 +99,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 <template>
   <div class="site-shell">
     <header class="site-header" :class="{ 'paper-header': route === 'whitepaper' }">
-      <a class="brand" href="#/" @click="syncRoute" aria-label="SurfX home"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">X</span></span></a>
+      <a class="brand" href="#/" @click="syncRoute" aria-label="SurfK home"><span class="brand-mark">∿</span><span>Surf<span class="brand-x">K</span></span></a>
       <nav class="desktop-nav" :aria-label="lang === 'ko' ? '주 메뉴' : 'Main navigation'">
         <button @click="goTo('about')">{{ t.nav[0] }}</button>
         <button @click="goTo('experience')">{{ t.nav[1] }}</button>
@@ -127,7 +127,7 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
             <p class="hero-body">{{ t.heroBody }}</p>
             <div class="button-row"><button class="btn btn-primary" @click="goTo('about')">{{ t.heroCta }} <span>↗</span></button><a class="btn btn-text" :href="whitepaperUrl">{{ t.paperCta }} <span>↗</span></a></div>
           </div>
-          <div class="hero-art" aria-hidden="true"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><img :src="asset('wave.webp')" alt=""><span class="art-glint glint-one">✳</span><span class="art-glint glint-two">✦</span></div>
+          <div class="hero-art" aria-hidden="true"><div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><img :src="asset('wave-k.png')" alt=""><span class="art-glint glint-one">✳</span><span class="art-glint glint-two">✦</span></div>
         </div>
       </section>
 
@@ -150,14 +150,14 @@ onUnmounted(() => window.removeEventListener('hashchange', syncRoute))
 
     <footer class="footer">
       <div class="container footer-partnership">
-        <img class="footer-collab-logo" :src="asset('surfx-neocode-collab.png')" alt="SurfX × NEOCODE" />
+        <img class="footer-collab-logo" :src="asset('surfk-neocode-collab.png')" alt="SurfK × NEOCODE" />
       </div>
       <div class="container footer-company-grid">
         <section><span class="footer-label">COMPANY</span><h2>Neocode</h2><p>Business Type: Company<br>Representative: Eunseong Park</p></section>
         <section><span class="footer-label">REGISTRATION</span><p>Business Registration No. 422-29-01059</p><p>E-Commerce Registration No. 2025-Seoul Guro-0315</p><p>D-U-N-S No. 963437563</p></section>
         <section><span class="footer-label">CONTACT</span><address>Suite 702, 36, Gyeongin-ro 20na-gil,<br>Guro-gu, Seoul, Republic of Korea</address><p>Email: <a href="mailto:neocode.kr@gmail.com">neocode.kr@gmail.com</a><br>Customer Support: <a href="tel:+821086741663">010-8674-1663</a></p></section>
       </div>
-      <div class="container footer-bottom"><span>© 2026 SurfX × NEOCODE. All rights reserved.</span><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a><button @click="goTo('top')">{{ t.top }} ↑</button></div></div>
+      <div class="container footer-bottom"><span>© 2026 SurfK × NEOCODE. All rights reserved.</span><div class="footer-links"><button @click="goTo('about')">{{ t.nav[0] }}</button><button @click="goTo('experience')">{{ t.nav[1] }}</button><a :href="whitepaperUrl">{{ t.nav[3] }}</a><a href="https://github.com/neocodekr/SurfX" target="_blank" rel="noopener noreferrer">GitHub ↗</a><button @click="goTo('top')">{{ t.top }} ↑</button></div></div>
     </footer>
   </div>
 </template>

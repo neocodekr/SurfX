@@ -121,7 +121,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     BackHandler(vm.screen != Screen.Welcome) {
         if (vm.screen == Screen.Home) { (activity as MainActivity).loadExitNativeAd(); exitDialog = true } else vm.back()
     }
-    if (exitDialog) AlertDialog(onDismissRequest = { exitDialog = false }, title = { Text(vm.tr("SurfX 종료", "Exit SurfX"), color = White) },
+    if (exitDialog) AlertDialog(onDismissRequest = { exitDialog = false }, title = { Text(vm.tr("SurfK 종료", "Exit SurfK"), color = White) },
         text = { Column { Text(vm.tr("정말 종료하시겠습니까?", "Are you sure you want to exit?"), color = Muted); Gap(10); (activity as MainActivity).exitNativeAd?.let { ExitNativeAd(it) } } },
         confirmButton = { TextButton(onClick = { activity.finish() }) { Text(vm.tr("확인", "OK")) } },
         dismissButton = { TextButton(onClick = { exitDialog = false }) { Text(vm.tr("취소", "Cancel")) } },
@@ -239,12 +239,12 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     }
 }
 @Composable private fun Hero(height: Int = 215) {
-    Image(painterResource(R.drawable.surfx_wave), null, Modifier.fillMaxWidth().height(height.dp), contentScale = androidx.compose.ui.layout.ContentScale.Fit)
+    Image(painterResource(R.drawable.surfk_wave), null, Modifier.fillMaxWidth().height(height.dp), contentScale = androidx.compose.ui.layout.ContentScale.Fit)
 }
 
 @Composable private fun Welcome(vm: SurfViewModel, openUrl: (String) -> Unit) {
     Column(Modifier.fillMaxSize().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Gap(28); Text("〰 SurfX", color = White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Gap(28); Text("〰 SurfK", color = White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.weight(0.3f)); Hero(285)
         Gap(8)
         Text(vm.tr("작은 도전,\n새로운 파도.", "Small challenges,\nnew waves."), color = White, textAlign = TextAlign.Center, fontSize = 32.sp, lineHeight = 38.sp, fontWeight = FontWeight.Bold)
@@ -265,7 +265,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 24.dp)) {
         Row(Modifier.fillMaxWidth().height(58.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("〰 SurfX", Modifier.weight(1f), color = White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text("〰 SurfK", Modifier.weight(1f), color = White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             Text("W", Modifier.background(CardAlt, RoundedCornerShape(50)).clickable { vm.go(Screen.Profile) }.padding(horizontal = 13.dp, vertical = 9.dp), color = Mint)
         }
         Sub(vm.tr("내 포인트", "My points")); Row(Modifier.clickable { vm.go(Screen.Wallet) }, verticalAlignment = Alignment.Bottom) {
@@ -423,14 +423,14 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
 
 @Composable private fun Invite(vm: SurfViewModel) = Page(vm.tr("친구 초대", "Invite a friend"), vm) {
     val ctx = LocalContext.current
-    Eyebrow("Make waves together"); Gap(8); H1(vm.tr("좋은 파도는\n함께 타요.", "Great waves are\nbetter together.")); Gap(12); Sub(vm.tr("친구와 SurfX를 시작하고\n함께 성장해 보세요.", "Start SurfX with a friend\nand grow together."))
+    Eyebrow("Make waves together"); Gap(8); H1(vm.tr("좋은 파도는\n함께 타요.", "Great waves are\nbetter together.")); Gap(12); Sub(vm.tr("친구와 SurfK를 시작하고\n함께 성장해 보세요.", "Start SurfK with a friend\nand grow together."))
     Gap(35); Surface {
-        Sub(vm.tr("내 초대 코드", "My invite code")); Gap(8); Text("SURFX24", color = White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-        Gap(14); Secondary(vm.tr("코드 복사", "Copy code")) { (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("SurfX invite code", "SURFX24")); vm.showNotice(vm.tr("초대 코드를 복사했어요", "Invite code copied")) }
+        Sub(vm.tr("내 초대 코드", "My invite code")); Gap(8); Text("SURFK24", color = White, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Gap(14); Secondary(vm.tr("코드 복사", "Copy code")) { (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("SurfK invite code", "SURFK24")); vm.showNotice(vm.tr("초대 코드를 복사했어요", "Invite code copied")) }
     }
     Gap(12); Surface { H2(vm.tr("친구 초대 보상  +100P", "Friend invite reward  +100P")); Gap(5); Sub(vm.tr("친구가 첫 서핑을 완료하면 지급하는 예시 정책입니다. 체험 앱에서는 자동 지급되지 않아요.", "This is an example reward policy. The demo app does not award it automatically.")) }
     Gap(30); Primary(vm.tr("초대 링크 공유", "Share invite link")) {
-        val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, vm.tr("SurfX Protocol 체험 코드: SURFX24", "SurfX Protocol invite code: SURFX24"))
+        val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, vm.tr("SurfK Protocol 체험 코드: SURFK24", "SurfK Protocol invite code: SURFK24"))
         ctx.startActivity(Intent.createChooser(send, vm.tr("친구에게 공유", "Share with a friend")))
     }
 }
@@ -472,7 +472,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     Gap(16); Surface { H2(vm.tr("24  Wave Rider  ·  나", "24  Wave Rider  ·  Me")); Text("480P", color = Mint) }
 }
 
-@Composable private fun Profile(vm: SurfViewModel, openUrl: (String) -> Unit) = Page(vm.tr("마이 SurfX", "My SurfX"), vm) {
+@Composable private fun Profile(vm: SurfViewModel, openUrl: (String) -> Unit) = Page(vm.tr("마이 SurfK", "My SurfK"), vm) {
     var languageDialog by remember { mutableStateOf(false) }
     if (languageDialog) AlertDialog(onDismissRequest = { languageDialog = false },
         title = { Text("Language / 언어") },
@@ -496,7 +496,7 @@ private fun SurfApp(vm: SurfViewModel, updateMessage: String, clearUpdate: () ->
     Item(vm.tr("계정 및 보안", "Account and security"), vm.tr("로컬 체험 데이터", "Local demo data")) { vm.showNotice(vm.tr("계정 연동은 준비 중이에요", "Account linking is coming soon")) }
     Item(vm.tr("개인정보 처리방침", "Privacy policy"), "neocode.cloud") { openUrl("https://neocode.cloud/private_privacy.html") }
     Item(vm.tr("서비스 약관", "Terms of service"), "neocode.cloud") { openUrl("https://neocode.cloud/term_of_service.html") }
-    Gap(18); Sub(vm.tr("SurfX 1.0.7 · 내부 테스트용 체험 앱", "SurfX 1.0.7 · Internal test demo")); Gap(10)
+    Gap(18); Sub(vm.tr("SurfK 1.0.7 · 내부 테스트용 체험 앱", "SurfK 1.0.7 · Internal test demo")); Gap(10)
     Secondary(vm.tr("시작 화면으로", "Back to welcome")) { vm.logout() }
     Gap(12); Image(painterResource(R.drawable.neocode_logo), "neocode", Modifier.height(28.dp))
 }

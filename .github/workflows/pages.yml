@@ -1,4 +1,4 @@
-name: Deploy SurfX website
+name: Deploy SurfK website
 
 on:
   push:
