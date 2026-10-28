@@ -3,7 +3,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const asset = (name) => `${import.meta.env.BASE_URL}${name}`
 const whitepaperUrl = 'https://whitepaper.surfx-protocol.com/'
-const lang = ref(localStorage.getItem('surfx-language') === 'ko' ? 'ko' : 'en')
+const lang = ref('en')
 const route = ref(window.location.hash.startsWith('#/whitepaper') ? 'whitepaper' : 'home')
 const menuOpen = ref(false)
 
@@ -82,7 +82,7 @@ const content = {
 }
 
 const t = computed(() => content[lang.value])
-function changeLanguage(value) { lang.value = value; localStorage.setItem('surfx-language', value) }
+function changeLanguage(value) { lang.value = value }
 function syncRoute() { route.value = window.location.hash.startsWith('#/whitepaper') ? 'whitepaper' : 'home'; menuOpen.value = false; window.scrollTo({ top: 0, behavior: 'instant' }) }
 function navigate(target) { window.location.hash = target; syncRoute() }
 function goTo(id) {
