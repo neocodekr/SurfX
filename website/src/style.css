@@ -6,3 +6,13 @@
 .footer-partnership{height:180px;min-height:0;padding:0 20px;justify-content:center;overflow:hidden;background:#e9f3ef;border-color:#d4e7df}
 .footer-collab-logo{display:block;width:100%;max-width:1100px;height:auto;flex:0 0 auto}
 @media(max-width:700px){.footer-partnership{height:110px;display:flex;padding:0 8px}}
+
+/* A slow current gives the hero wave motion without obscuring the copy. */
+.hero-art img{animation:surfx-wave-flow 9s ease-in-out infinite;transform-origin:52% 62%;will-change:transform}
+.hero-glow{animation:surfx-current-glow 12s ease-in-out infinite alternate;will-change:transform}
+.hero-art .glint-one{animation:surfx-glint-drift 6s ease-in-out infinite alternate}
+.hero-art .glint-two{animation:surfx-glint-drift 7s ease-in-out -2s infinite alternate-reverse}
+@keyframes surfx-wave-flow{0%,100%{transform:translate3d(0,0,0) rotate(-1deg) scale(1)}25%{transform:translate3d(-12px,7px,0) rotate(.4deg) scale(1.018)}50%{transform:translate3d(4px,-12px,0) rotate(1.4deg) scale(1.035)}75%{transform:translate3d(12px,2px,0) rotate(0deg) scale(1.016)}}
+@keyframes surfx-current-glow{from{transform:translate3d(-45px,15px,0) scale(.94)}to{transform:translate3d(45px,-25px,0) scale(1.08)}}
+@keyframes surfx-glint-drift{from{transform:translate3d(-6px,8px,0);opacity:.55}to{transform:translate3d(7px,-10px,0);opacity:1}}
+@media(prefers-reduced-motion:reduce){.hero-art img,.hero-glow,.hero-art .art-glint{animation:none;will-change:auto}}
