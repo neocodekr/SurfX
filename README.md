@@ -2,7 +2,7 @@
 
 ## Website (Vue / GitHub Pages)
 
-The bilingual SurfK introduction is in [`website/`](website/). The site uses Vue 3 and Vite, with a `/` base path for the custom domain `www.surfx-protocol.com`. The whitepaper is deployed separately from [SurfK-whitepaper](https://github.com/neocodekr/SurfX-whitepaper) at `whitepaper.surfx-protocol.com`.
+The bilingual SurfK introduction is in [`website/`](website/). The site uses Vue 3 and Vite, with a `/` base path for the custom domain `www.surfx-protocol.com`. The whitepaper is deployed separately from [SurfK-whitepaper](https://github.com/neocodekr/SurfX-whitepaper) at `whitepaper.surfk.xyz`.
 
 ```powershell
 cd website

@@ -2,7 +2,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const asset = (name) => `${import.meta.env.BASE_URL}${name}`
-const whitepaperUrl = 'https://whitepaper.surfx-protocol.com/'
+const whitepaperUrl = 'https://whitepaper.surfk.xyz/'
 const lang = ref('en')
 const route = ref(window.location.hash.startsWith('#/whitepaper') ? 'whitepaper' : 'home')
 const menuOpen = ref(false)
